@@ -60,14 +60,14 @@ input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 
 .chip{font-size:.82rem;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;white-space:nowrap}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.88rem;color:var(--muted);margin-bottom:6px}
 .legend b{display:inline-block;width:12px;height:12px;border-radius:4px;vertical-align:-1px;margin-right:5px}
-.scroll{overflow-x:auto;margin:0 -2px;border-radius:12px;border:1px solid var(--line);background:var(--card);-webkit-overflow-scrolling:touch}
+.scroll{overflow-x:auto;max-width:100%;border-radius:12px;border:1px solid var(--line);background:var(--card);-webkit-overflow-scrolling:touch}
 table{border-collapse:separate;border-spacing:0;font-size:.85rem}
 th,td{padding:0;text-align:center}
 th{font-weight:700;color:var(--muted);padding:8px 0;min-width:32px}
 td.m{width:32px;height:34px}
 td.m span{display:grid;place-items:center;width:26px;height:26px;margin:3px;border-radius:7px;color:#fff;font-weight:800;font-size:.8rem}
 .sticky{position:sticky;left:0;background:var(--card);text-align:left;padding:0 10px;min-width:92px;max-width:92px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:700;z-index:1;border-right:1px solid var(--line)}
-tr.same td.m span{outline:2px solid var(--ok);outline-offset:-2px}
+td.m span.eq{outline:2px solid var(--ok);outline-offset:1px}
 details{border-top:1px solid var(--line)}
 details:first-of-type{border-top:0}
 summary{list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:14px 0;min-height:52px;cursor:pointer;font-weight:700}
@@ -223,7 +223,8 @@ function renderResults(){
   h+=`<div class="row"><div class="top"><span class="name">Média do grupo</span><span class="chip" style="background:${gv.cor}">${gv.t}</span></div>${stack({a:+(tot.a/n).toFixed(1),b:+(tot.b/n).toFixed(1),c:+(tot.c/n).toFixed(1)})}</div></div>`;
   // matriz por pergunta
   h+=`<div class="sec"><h2>Pergunta por pergunta</h2><p class="muted" style="margin:-6px 0 10px;font-size:.9rem">Contorno verde: todo mundo respondeu igual. Deslize para o lado.</p><div class="scroll"><table><thead><tr><th class="sticky"></th>${Q.map((_,i)=>`<th>${i+1}</th>`).join("")}</tr></thead><tbody>`;
-  h+=rows.map(r=>`<tr><td class="sticky">${esc(r.nome)}</td>${Q.map((_,i)=>{const k=r.respostas["q"+(i+1)];return `<td class="m"><span style="background:${COR[k]||"var(--line)"}">${k?k.toUpperCase():"-"}</span></td>`}).join("")}</tr>`).join("");
+  const eq=Q.map((_,i)=>n>1&&rows.every(r=>r.respostas["q"+(i+1)]===rows[0].respostas["q"+(i+1)]));
+  h+=rows.map(r=>`<tr><td class="sticky">${esc(r.nome)}</td>${Q.map((_,i)=>{const k=r.respostas["q"+(i+1)];return `<td class="m"><span class="${eq[i]?"eq":""}" style="background:${COR[k]||"var(--line)"}">${k?k.toUpperCase():"-"}</span></td>`}).join("")}</tr>`).join("");
   h+=`</tbody></table></div></div>`;
   // respostas completas
   h+=`<div class="sec card"><h2>Respostas de cada um</h2>`;
