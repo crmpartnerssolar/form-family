@@ -18,7 +18,20 @@
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:url(img/folhas.webp) right top/min(100%,520px) auto no-repeat;mix-blend-mode:multiply;opacity:.7}
+body{position:relative}
+body::before{content:"";position:absolute;top:0;right:0;width:min(100%,520px);aspect-ratio:3/4;z-index:-1;pointer-events:none;background:url(img/folhas.webp?v=3) right top/100% auto no-repeat;mix-blend-mode:multiply;opacity:.75}
+.group{display:flex;gap:16px;align-items:center;margin:8px 0 18px}
+.group svg{flex:none}.dn{font:600 22px var(--serif);fill:var(--fg)}.dl{font:700 7px var(--sans);fill:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.gl{flex:1;min-width:0}.gt{font:600 1.3rem/1.2 var(--serif);margin:2px 0 8px}
+.gi{display:flex;align-items:center;gap:8px;font-size:.92rem;padding:2px 0}.gi b{width:10px;height:10px;border-radius:50%;flex:none}.gi span{flex:1}.gi i{font-style:normal;font-weight:800}
+.people{display:flex;flex-direction:column;gap:10px}
+.person{display:flex;flex-direction:column;gap:10px;padding:14px}
+.person .top{display:flex;align-items:center;gap:10px;justify-content:flex-start}
+.person .name{flex:1;min-width:0}
+.av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font:600 1rem var(--serif)}
+.par{padding:8px 0}.par .top{display:flex;justify-content:space-between;gap:8px;font-size:.92rem}
+.meter{height:8px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}.meter i{display:block;height:100%;background:var(--accent);border-radius:99px}
+.orn{display:block;width:150px;margin:28px auto 0;mix-blend-mode:multiply;opacity:.8}
 body{background:radial-gradient(90% 50% at 0% 100%,#f3e3c6 0%,transparent 60%),var(--bg);background-attachment:fixed;color:var(--fg);font:16px/1.5 var(--sans);min-height:100dvh;overscroll-behavior-y:none}
 h1,h2{font-family:var(--serif);font-weight:600}
 button{font:inherit;color:inherit}
@@ -65,7 +78,6 @@ input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 
 .opt{border-radius:18px}.opt .k{font-family:var(--serif)}
 .btn{border-radius:99px;box-shadow:0 6px 16px -8px color-mix(in srgb,var(--accent) 80%,transparent)}
 .tabs{border-radius:99px}.tab{border-radius:99px}
-body::after{content:"";position:fixed;left:-30px;bottom:-20px;width:230px;height:230px;z-index:-1;pointer-events:none;background:url(img/ervas.webp) center/cover no-repeat;mix-blend-mode:multiply;opacity:.38;-webkit-mask-image:radial-gradient(closest-side,#000 55%,transparent);mask-image:radial-gradient(closest-side,#000 55%,transparent)}
 .band{display:block;width:100%;height:120px;object-fit:cover;object-position:50% 72%;border-radius:24px;margin:4px 0 0;-webkit-mask-image:linear-gradient(#000 55%,transparent);mask-image:linear-gradient(#000 55%,transparent)}
 .hero{display:block;width:100%;height:150px;object-fit:cover;object-position:50% 78%;border-radius:24px;margin:6px 0 4px;box-shadow:0 10px 24px -14px rgba(90,110,80,.5)}
 .pic{display:block;width:132px;height:132px;object-fit:cover;margin:0 auto 6px;mix-blend-mode:multiply}
@@ -159,14 +171,14 @@ function render(){tab==="q"?renderForm():renderResults()}
 
 function renderForm(){
   if(myId&&idx>=Q.length){
-    main.innerHTML=`<div class="card done fade"><img class="pic" src="img/ervas.webp" alt=""><h2>Respostas enviadas</h2><p class="muted">Obrigado, ${esc(nome)}. Veja o comparativo com o pessoal.</p><button class="btn" id="go">Ver respostas</button></div>`;
+    main.innerHTML=`<div class="card done fade"><img class="pic" src="img/ervas.webp?v=3" alt=""><h2>Respostas enviadas</h2><p class="muted">Obrigado, ${esc(nome)}. Veja o comparativo com o pessoal.</p><button class="btn" id="go">Ver respostas</button></div>`;
     $("#go").onclick=()=>setTab("r");return;
   }
   if(idx===0&&!nome){
-    main.innerHTML=`<div class="fade"><img class="hero" src="img/amanhecer.webp" alt=""><p class="eyebrow">Hábitos saudáveis</p><h1 style="margin-top:4px">Como está o seu sono?</h1><p class="muted">18 perguntas de tocar, uns 2 minutos. Não existe resposta certa: escolha a que mais combina com a sua rotina.</p>
+    main.innerHTML=`<div class="fade"><img class="hero" src="img/amanhecer.webp?v=3" alt=""><p class="eyebrow">Hábitos saudáveis</p><h1 style="margin-top:4px">Como está o seu sono?</h1><p class="muted">18 perguntas de tocar, uns 2 minutos. Não existe resposta certa: escolha a que mais combina com a sua rotina.</p>
     <div class="field"><label for="nome">Seu nome</label><input id="nome" type="text" autocomplete="given-name" autocapitalize="words" enterkeyhint="go" maxlength="40" placeholder="Como te chamam?"></div>
     <p class="err" id="err"></p>
-    <div class="dock"><button class="btn" id="ini">Começar</button></div></div>`;
+    <div class="dock"><button class="btn" id="ini">Começar</button></div><img class="orn" src="img/ervas.webp?v=3" alt=""></div>`;
     const i=$("#nome"),go=()=>{const v=i.value.trim();if(!v){$("#err").textContent="Digite seu nome para começar.";i.focus();return}nome=v;store.set("sono_nome",v);idx=0;resp=[];save();renderQ()};
     $("#ini").onclick=go;i.onkeydown=e=>{if(e.key==="Enter"){e.preventDefault();i.blur();go()}};
     i.onfocus=()=>setTimeout(()=>i.scrollIntoView({block:"center",behavior:"smooth"}),300);
@@ -193,7 +205,7 @@ function renderQ(){
 }
 
 function renderConfirm(){
-  main.innerHTML=`<div class="fade"><img class="pic" src="img/lua.webp" alt="" style="margin-top:10px"><h1>Tudo pronto, ${esc(nome)}</h1><p class="muted">Você respondeu as 18 perguntas. Ao enviar, suas respostas aparecem na aba Respostas para o grupo.</p>
+  main.innerHTML=`<div class="fade"><img class="pic" src="img/lua.webp?v=3" alt="" style="margin-top:10px"><h1>Tudo pronto, ${esc(nome)}</h1><p class="muted">Você respondeu as 18 perguntas. Ao enviar, suas respostas aparecem na aba Respostas para o grupo.</p>
   <p class="err" id="err">${esc(erro)}</p>
   <div class="dock"><button class="btn" id="env" ${enviando?"disabled":""}>${enviando?"Enviando…":"Enviar respostas"}</button><button class="btn ghost" id="rev">Revisar a última</button></div></div>`;
   $("#rev").onclick=()=>{idx=Q.length-1;save();renderQ()};
@@ -224,17 +236,23 @@ function stack(c){const t=Q.length;return `<div class="stack">${KEYS.map(k=>c[k]
 
 function renderResults(){
   if(rows===null){main.innerHTML=`<p class="muted">Carregando…</p>`;return}
-  if(!rows.length){main.innerHTML=`<div class="card done fade"><img class="pic" src="img/lua.webp" alt=""><h2>Ninguém respondeu ainda</h2><p class="muted">Quando o primeiro enviar, os gráficos aparecem aqui.</p><button class="btn" id="go">Responder agora</button></div>`;$("#go").onclick=()=>setTab("q");return}
+  if(!rows.length){main.innerHTML=`<div class="card done fade"><img class="pic" src="img/lua.webp?v=3" alt=""><h2>Ninguém respondeu ainda</h2><p class="muted">Quando o primeiro enviar, os gráficos aparecem aqui.</p><button class="btn" id="go">Responder agora</button></div>`;$("#go").onclick=()=>setTab("q");return}
   const open=new Set([...main.querySelectorAll("details[open]")].map(d=>d.dataset.id));
   const cs=rows.map(contar);const tot={a:0,b:0,c:0};cs.forEach(c=>KEYS.forEach(k=>tot[k]+=c[k]));
   const n=rows.length;
   const you=r=>r.id===myId?`<span class="you">você</span>`:"";
-  let h=`<div class="fade"><img class="band" src="img/amanhecer.webp" alt=""><div class="bk" style="margin-top:-34px;position:relative"><h1 style="margin:4px 0">Comparativo</h1><button class="refresh" id="rf">Atualizar</button></div>
-  <div class="legend"><span><b class="sa"></b>A leve</span><span><b class="sb"></b>B variável</span><span><b class="sc"></b>C pesado</span></div>
-  <div class="sec card">`;
-  h+=rows.map((r,i)=>{const v=veredito(cs[i]);return `<div class="row"><div class="top"><span class="name">${esc(r.nome)}${you(r)}</span><span class="chip" style="background:${v.cor}">${v.t}</span></div>${stack(cs[i])}</div>`}).join("");
-  const gv=veredito(tot);
-  h+=`<div class="row"><div class="top"><span class="name">Média do grupo</span><span class="chip" style="background:${gv.cor}">${gv.t}</span></div>${stack({a:+(tot.a/n).toFixed(1),b:+(tot.b/n).toFixed(1),c:+(tot.c/n).toFixed(1)})}</div></div>`;
+  let h=`<div class="fade"><img class="band" src="img/amanhecer.webp?v=3" alt=""><div class="bk" style="margin-top:-34px;position:relative"><h1 style="margin:4px 0">Comparativo</h1><button class="refresh" id="rf">Atualizar</button></div>
+  <div class="legend"><span><b class="sa"></b>A leve</span><span><b class="sb"></b>B variável</span><span><b class="sc"></b>C pesado</span></div>`;
+  const gv=veredito(tot),all=n*Q.length,R=38,C=2*Math.PI*R;let off=0;
+  const arcs=KEYS.map(k=>{const len=tot[k]/all*C;const s=`<circle cx="50" cy="50" r="${R}" fill="none" stroke="${COR[k]}" stroke-width="14" stroke-dasharray="${len} ${C-len}" stroke-dashoffset="${-off}" transform="rotate(-90 50 50)"/>`;off+=len;return s}).join("");
+  h+=`<div class="card group"><svg viewBox="0 0 100 100" width="118" height="118" role="img" aria-label="Distribuição do grupo"><circle cx="50" cy="50" r="${R}" fill="none" stroke="var(--line)" stroke-width="14"/>${arcs}<text x="50" y="49" text-anchor="middle" class="dn">${n}</text><text x="50" y="62" text-anchor="middle" class="dl">${n===1?"pessoa":"pessoas"}</text></svg>
+  <div class="gl"><p class="eyebrow" style="margin:0">O grupo no geral</p><p class="gt" style="color:${gv.cor}">${gv.t}</p>${KEYS.map(k=>`<div class="gi"><b style="background:${COR[k]}"></b><span>${TIPO[k]}</span><i>${Math.round(tot[k]/all*100)}%</i></div>`).join("")}</div></div>`;
+  h+=`<div class="sec"><h2>Cada pessoa</h2><div class="people">`+rows.map((r,i)=>{const v=veredito(cs[i]);return `<div class="card person"><div class="top"><span class="av" style="background:${v.cor}">${esc([...r.nome.trim()][0]||"?").toUpperCase()}</span><span class="name">${esc(r.nome)}${you(r)}</span><span class="chip" style="background:${v.cor}">${v.t}</span></div>${stack(cs[i])}</div>`}).join("")+`</div></div>`;
+  if(n>1){
+    const pares=[];for(let x=0;x<n;x++)for(let y=x+1;y<n;y++){let m=0;for(let q=1;q<=Q.length;q++)if(rows[x].respostas["q"+q]===rows[y].respostas["q"+q])m++;pares.push({a:rows[x].nome,b:rows[y].nome,m})}
+    pares.sort((p,q)=>q.m-p.m);
+    h+=`<div class="sec card"><h2>Quem combina com quem</h2>`+pares.slice(0,6).map(p=>`<div class="par"><div class="top"><span class="name">${esc(p.a)} + ${esc(p.b)}</span><span class="muted">${p.m} de ${Q.length}</span></div><div class="meter"><i style="width:${p.m/Q.length*100}%"></i></div></div>`).join("")+`</div>`;
+  }
   // matriz por pergunta
   h+=`<div class="sec"><h2>Pergunta por pergunta</h2><p class="muted" style="margin:-6px 0 10px;font-size:.9rem">Contorno verde: todo mundo respondeu igual. Deslize para o lado.</p><div class="scroll"><table><thead><tr><th class="sticky"></th>${Q.map((_,i)=>`<th>${i+1}</th>`).join("")}</tr></thead><tbody>`;
   const eq=Q.map((_,i)=>n>1&&rows.every(r=>r.respostas["q"+(i+1)]===rows[0].respostas["q"+(i+1)]));
@@ -243,7 +261,7 @@ function renderResults(){
   // respostas completas
   h+=`<div class="sec card"><h2>Respostas de cada um</h2>`;
   h+=rows.map((r,i)=>`<details data-id="${esc(r.id)}" ${open.has(r.id)?"open":""}><summary><span>${esc(r.nome)}${you(r)}</span></summary><div class="qa">${Q.map((q,j)=>{const k=r.respostas["q"+(j+1)];const ix=KEYS.indexOf(k);return `<div><p class="q">${j+1}. ${esc(q[0])}</p><div class="ans"><i style="background:${COR[k]||"var(--line)"}">${k?k.toUpperCase():"-"}</i><p>${ix>=0?esc(q[ix+1]):"Sem resposta"}</p></div></div>`}).join("")}</div></details>`).join("");
-  h+=`</div></div>`;
+  h+=`</div><img class="orn" src="img/ervas.webp?v=3" alt=""></div>`;
   main.innerHTML=h;
   $("#rf").onclick=load;
 }
