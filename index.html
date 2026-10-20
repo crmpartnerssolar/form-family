@@ -3,22 +3,26 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
-<meta name="theme-color" content="#0f1a24">
-<title>Qual é o seu sono?</title>
+<meta name="theme-color" content="#f3f1e8">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Nunito+Sans:wght@400;600;700;800&display=swap">
+<title>Como está o seu sono?</title>
 <style>
 /* Layout: coluna única mobile, uma pergunta por tela, abas no topo (não sobem com o teclado) */
 :root{
-  --bg:#f4f6f8; --card:#ffffff; --fg:#14202b; --muted:#5d6b78; --line:#dde3e9; --accent:#2f6fed; --accent-fg:#fff;
-  --a:#2aa3a0; --b:#e8a21b; --c:#7a5af0; --ok:#1f9d63;
-  --radius:16px;
+  --bg:#f3f1e8; --card:#fdfcf7; --fg:#2c3a2e; --muted:#6f7b6c; --line:#e1dfd0; --accent:#5b8a5f; --accent-fg:#fdfcf7;
+  --a:#6fa6bf; --b:#dfa94f; --c:#7b9a5a; --ok:#5b8a5f;
+  --radius:20px;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif; --sans:"Nunito Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
 }
-@media (prefers-color-scheme:dark){:root{--bg:#0f1a24;--card:#18262f;--fg:#eaf0f5;--muted:#9fb0bd;--line:#2a3b47;--accent:#6c9bff;--accent-fg:#0b1620;--a:#45c4c0;--b:#f2b63c;--c:#9a82ff;--ok:#41c98a;color-scheme:dark}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0}
-body{background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;min-height:100dvh;overscroll-behavior-y:none}
+body{background:radial-gradient(120% 60% at 100% 0%,#dfe9d3 0%,transparent 60%),radial-gradient(90% 50% at 0% 100%,#f3e3c6 0%,transparent 60%),var(--bg);background-attachment:fixed;color:var(--fg);font:16px/1.5 var(--sans);min-height:100dvh;overscroll-behavior-y:none}
+h1,h2{font-family:var(--serif);font-weight:600}
 button{font:inherit;color:inherit}
 .app{max-width:560px;margin:0 auto;min-height:100dvh;display:flex;flex-direction:column;padding-left:max(16px,env(safe-area-inset-left));padding-right:max(16px,env(safe-area-inset-right))}
-header{position:sticky;top:0;z-index:5;background:var(--bg);padding:max(10px,env(safe-area-inset-top)) 0 10px}
+header{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);padding:max(10px,env(safe-area-inset-top)) 0 10px}
 .tabs{display:grid;grid-template-columns:1fr 1fr;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:4px;gap:4px}
 .tab{border:0;background:none;padding:12px 8px;border-radius:10px;font-weight:600;color:var(--muted);min-height:44px}
 .tab[aria-selected=true]{background:var(--accent);color:var(--accent-fg)}
@@ -55,7 +59,12 @@ input[type=text]:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 
 .name{font-weight:700;overflow-wrap:anywhere}
 .you{font-size:.72rem;font-weight:700;background:var(--accent);color:var(--accent-fg);border-radius:99px;padding:2px 8px;margin-left:6px;vertical-align:middle}
 .stack{display:flex;height:22px;border-radius:8px;overflow:hidden;background:var(--line)}
-.stack>span{display:grid;place-items:center;color:#fff;font-size:.75rem;font-weight:800;min-width:0}
+.stack>span{display:grid;place-items:center;color:#fff;font-size:.75rem;font-weight:800;min-width:0;text-shadow:0 1px 2px rgba(0,0,0,.25)}
+.stack{border-radius:99px}
+.opt{border-radius:18px}.opt .k{font-family:var(--serif)}
+.btn{border-radius:99px;box-shadow:0 6px 16px -8px color-mix(in srgb,var(--accent) 80%,transparent)}
+.tabs{border-radius:99px}.tab{border-radius:99px}
+.leaf{display:block;width:44px;height:44px;margin:14px 0 0;color:var(--accent)}
 .sa{background:var(--a)}.sb{background:var(--b)}.sc{background:var(--c)}
 .chip{font-size:.82rem;font-weight:700;padding:3px 10px;border-radius:99px;color:#fff;white-space:nowrap}
 .legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.88rem;color:var(--muted);margin-bottom:6px}
@@ -145,11 +154,11 @@ function render(){tab==="q"?renderForm():renderResults()}
 
 function renderForm(){
   if(myId&&idx>=Q.length){
-    main.innerHTML=`<div class="card done fade"><div class="big">✅</div><h2>Respostas enviadas</h2><p class="muted">Obrigado, ${esc(nome)}. Veja o comparativo com o pessoal.</p><button class="btn" id="go">Ver respostas</button></div>`;
+    main.innerHTML=`<div class="card done fade"><div class="big">🌿</div><h2>Respostas enviadas</h2><p class="muted">Obrigado, ${esc(nome)}. Veja o comparativo com o pessoal.</p><button class="btn" id="go">Ver respostas</button></div>`;
     $("#go").onclick=()=>setTab("r");return;
   }
   if(idx===0&&!nome){
-    main.innerHTML=`<div class="fade"><h1>Qual é o seu sono?</h1><p class="muted">18 perguntas rápidas, de tocar. Leva uns 2 minutos. Não existe resposta errada: escolha a que chega mais perto da sua realidade.</p>
+    main.innerHTML=`<div class="fade"><svg class="leaf" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 38C8 20 20 8 40 8c0 20-12 32-30 30z"/><path d="M10 38c6-10 13-17 22-22"/></svg><h1>Como está o seu sono?</h1><p class="muted">18 perguntas de tocar, uns 2 minutos. Não existe resposta certa: escolha a que mais combina com a sua rotina.</p>
     <div class="field"><label for="nome">Seu nome</label><input id="nome" type="text" autocomplete="given-name" autocapitalize="words" enterkeyhint="go" maxlength="40" placeholder="Como te chamam?"></div>
     <p class="err" id="err"></p>
     <div class="dock"><button class="btn" id="ini">Começar</button></div></div>`;
@@ -210,7 +219,7 @@ function stack(c){const t=Q.length;return `<div class="stack">${KEYS.map(k=>c[k]
 
 function renderResults(){
   if(rows===null){main.innerHTML=`<p class="muted">Carregando…</p>`;return}
-  if(!rows.length){main.innerHTML=`<div class="card done fade"><div class="big">🌙</div><h2>Ninguém respondeu ainda</h2><p class="muted">Quando o primeiro enviar, os gráficos aparecem aqui.</p><button class="btn" id="go">Responder agora</button></div>`;$("#go").onclick=()=>setTab("q");return}
+  if(!rows.length){main.innerHTML=`<div class="card done fade"><div class="big">🌱</div><h2>Ninguém respondeu ainda</h2><p class="muted">Quando o primeiro enviar, os gráficos aparecem aqui.</p><button class="btn" id="go">Responder agora</button></div>`;$("#go").onclick=()=>setTab("q");return}
   const open=new Set([...main.querySelectorAll("details[open]")].map(d=>d.dataset.id));
   const cs=rows.map(contar);const tot={a:0,b:0,c:0};cs.forEach(c=>KEYS.forEach(k=>tot[k]+=c[k]));
   const n=rows.length;
